@@ -1,0 +1,35 @@
+# Claude Code config — exam notes, slash commands, local settings
+.claude/
+
+# Generated data — recreated by scripts at runtime
+data/
+*.csv
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# MLflow artifacts (stored in Docker volume)
+mlruns/
+mlartifacts/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# LocalStack volume
+.localstack/

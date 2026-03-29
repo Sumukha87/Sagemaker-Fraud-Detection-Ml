@@ -1,0 +1,34 @@
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localsage-aws
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sagemaker,iam,cloudwatch,glue,sns,events,lambda
+      - DEBUG=0
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: localsage-mlflow
+    ports:
+      - "5000:5000"
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlartifacts
+    volumes:
+      - mlflow_data:/mlflow.db
+      - mlflow_artifacts:/mlartifacts
+
+volumes:
+  localstack_data:
+  mlflow_data:
+  mlflow_artifacts:
